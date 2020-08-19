@@ -7,6 +7,23 @@ Bearnav is a simple teach-and-repeat visual navigation system robust to appearan
 Early versions of the system proved their ability to reliably traverse polygonal trajectories indoors and outdoors during adverse illumination conditions [[1,2](#references)], in environments undergoing drastic appearance changes [[2,3](#references)] and on flying robots[[4](#references)].
 The version presented here is described in [[5,6](#references)] and it allows to learn arbitrary, smooth paths, is fully integrated in the ROS operating system and is available on-line in this repository.
 
+## Actual instructions
+
+1. Unsure if opencv needs to be installed as below on Ubuntu 18 (I tested with Ubuntu 16).
+2. Teach
+   1. Start the core mapping node: `roslaunch stroll_bearnav mapping-core-miro.launch`
+   2. Start the mapping gui node: `roslaunch stroll_bearnav mapping-gui-miro.launch`
+   3. Enter a map name between the quotation marks after prefix. Eg. `prefix: 'map-test'`
+   4. Click `SEND GOAL` (should be "start mapping")
+   5. Drive the robot around on the teach run, then click `CANCEL GOAL` (should be "finish mapping")
+3. Repeat
+   1. Start the core navigation node: `roslaunch stroll_bearnav navigation-core-miro.launch`
+   2. Start the navigation gui node: `roslaunch stroll_bearnav navigation-gui-miro.launch`
+   3. Load the map: in the window `stroll_bearnav/loadMap GUI Client`, enter the map name after prefix. Eg. `prefix: 'map-test'`
+   4. Click `SEND GOAL` in that window (should be "load map")
+   5. In the window `stroll_bearnav/navigator GUI Client`, click `SEND GOAL` (should be "start repeat")
+   6. The repeat run will start. Best to reload the map if you want to run it again, else it seems to get confused when repeating control commands
+
 ## Prerequisities - before the seminar 
 
 1. You should install Ubuntu 16 with ROS kinetic or Ubuntu 18 with ROS melodic.
