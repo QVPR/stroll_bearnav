@@ -36,12 +36,6 @@
 <node pkg="stroll_bearnav" type="mapper_node" name="mapper" output="screen">
 	<remap from="image" to="/miro/sensors/cam/both"/>
 	<param name="folder" value="$(arg folder)" />
-	<param name="forwardSpeed" value="0.2" />
-	<param name="angularSpeed" value="3.0" />
-	<param name="flipperSpeed" value="3.0" /> <!-- I think flipperSpeed is used in place of angularSpeed. Set both to be sure... -->
-	<param name="forwardAcceleration" value="0.05" />
-	<param name="axis_linear" value="1" />
-	<param name="axis_angular" value="3" />
 </node>
 
 <!-- map loader node -->

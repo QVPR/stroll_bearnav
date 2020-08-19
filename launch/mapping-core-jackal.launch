@@ -1,0 +1,29 @@
+<launch>
+
+<!-- Default folder with maps-->
+<arg name="folder" default="$(env HOME)/test_bearnav"/>
+
+<!-- Distance Measurement Node -->
+<node pkg="stroll_bearnav" type="odometry_monitor_node" name="odometry_monitor">
+	<remap from="odom" to="odometry/filtered"/>
+</node>
+
+<!-- feature extraction -->
+<node pkg="stroll_bearnav" type="feature_extraction_node" name="feature_extraction">
+	<remap from="image" to="ros_indigosdk_occam/image0"/>
+</node>
+
+<!-- mapping node -->
+<node pkg="stroll_bearnav" type="mapper_node" name="mapper" output="screen">
+	<param name="folder" value="$(arg folder)" />
+	<remap from="image" to="ros_indigosdk_occam/image0"/>
+	<remap from="cmd" to="jackal_velocity_controller/cmd_vel"/>
+	<param name="forwardSpeed" value="0.2" />
+	<param name="angularSpeed" value="0.93" />
+	<param name="flipperSpeed" value="0.93" /> <!-- I think flipperSpeed is used in place of angularSpeed. Set both to be sure... -->
+	<param name="forwardAcceleration" value="0.02" />
+	<param name="axis_linear" value="1" />
+	<param name="axis_angular" value="3" />
+</node>
+
+</launch>
