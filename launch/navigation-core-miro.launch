@@ -48,7 +48,7 @@
 	<param name="folder" value="$(arg folder)" />
 	<remap from="cmd" to="/miro/control/cmd_vel_unstamped"/>
 </node>
-<node pkg="miro_demos" type="twist_stamper.py" name="teleop_stamper">
+<node pkg="miro_teach_repeat" type="twist_stamper.py" name="teleop_stamper">
 	<remap from="cmd_vel_unstamped" to="/miro/control/cmd_vel_unstamped" />
 	<remap from="cmd_vel" to="/miro/control/cmd_vel" />
 </node>
