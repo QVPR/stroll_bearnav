@@ -541,9 +541,12 @@ void featureCallback(const stroll_bearnav::FeatureArray::ConstPtr& msg)
 					kpCur.push_back(tmp);
 				}
 				if (showAllMatches){
-					drawMatches(mapIm,kpMap,curIm,kpCur,good_matches,outtran,Scalar(0,0,255),Scalar(0,0,255),vector<char>(),0);
-					if (showGoodMatches) drawMatches(mapIm,kpMap,curIm,kpCur,best_matches,outtran,Scalar(0,255,0),Scalar(0,255,0),vector<char>(),3);
+					//drawMatches(mapIm,kpMap,curIm,kpCur,good_matches,outtran,Scalar(0,0,255),Scalar(0,0,255),vector<char>(),cv::DrawMatchesFlags::DEFAULT);
+                    drawMatches(mapIm,kpMap,curIm,kpCur,good_matches,outtran,Scalar(0,0,255),Scalar(0,0,255),vector<char>(),0);
+					//if (showGoodMatches) drawMatches(mapIm,kpMap,curIm,kpCur,best_matches,outtran,Scalar(0,255,0),Scalar(0,255,0),vector<char>(),cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+                    if (showGoodMatches) drawMatches(mapIm,kpMap,curIm,kpCur,best_matches,outtran,Scalar(0,255,0),Scalar(0,255,0),vector<char>(),3);
 				}else{
+					//if (showGoodMatches) drawMatches(mapIm,kpMap,curIm,kpCur,best_matches,outtran,Scalar(0,255,0),Scalar(0,255,0),vector<char>(),cv::DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS);
 					if (showGoodMatches) drawMatches(mapIm,kpMap,curIm,kpCur,best_matches,outtran,Scalar(0,255,0),Scalar(0,255,0),vector<char>(),2);
 				}
 				output = outtran.t();

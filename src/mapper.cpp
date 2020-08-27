@@ -6,6 +6,7 @@
 #include <iostream>
 #include <cmath>
 #include <opencv2/opencv.hpp>
+#include <opencv2/core/utils/filesystem.hpp>
 #include <stroll_bearnav/FeatureArray.h>
 #include <stroll_bearnav/Feature.h>
 #include <std_msgs/Float32.h>
@@ -203,6 +204,8 @@ void executeCB(const stroll_bearnav::mapperGoalConstPtr &goal, Server *serv)
 			descriptorMap.push_back(descriptors);
 			distanceMap.push_back(distanceTravelled);
 			ratingsMap.push_back(ratings);
+
+            cv::utils::fs::createDirectory(folder);
 
 			/*and flush it to the disk*/
 			for (int i = 0;i<distanceMap.size();i++){

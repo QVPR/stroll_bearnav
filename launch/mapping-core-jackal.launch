@@ -6,18 +6,22 @@
 <!-- Distance Measurement Node -->
 <node pkg="stroll_bearnav" type="odometry_monitor_node" name="odometry_monitor">
 	<remap from="odom" to="odometry/filtered"/>
+	<remap from="joint_states" to="dev/null"/>
 </node>
 
 <!-- feature extraction -->
 <node pkg="stroll_bearnav" type="feature_extraction_node" name="feature_extraction">
 	<remap from="image" to="ros_indigosdk_occam/image0"/>
+    <param name="image_transport" value="compressed"/>
 </node>
 
 <!-- mapping node -->
 <node pkg="stroll_bearnav" type="mapper_node" name="mapper" output="screen">
 	<param name="folder" value="$(arg folder)" />
 	<remap from="image" to="ros_indigosdk_occam/image0"/>
+    <param name="image_transport" value="compressed"/>
 	<remap from="cmd" to="jackal_velocity_controller/cmd_vel"/>
+	<remap from="joy" to="bluetooth_teleop/joy"/>
 	<param name="forwardSpeed" value="0.2" />
 	<param name="angularSpeed" value="0.93" />
 	<param name="flipperSpeed" value="0.93" /> <!-- I think flipperSpeed is used in place of angularSpeed. Set both to be sure... -->
