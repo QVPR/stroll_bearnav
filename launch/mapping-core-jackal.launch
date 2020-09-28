@@ -19,8 +19,8 @@
 <node pkg="stroll_bearnav" type="mapper_node" name="mapper" output="screen">
 	<param name="folder" value="$(arg folder)" />
 	<remap from="image/compressed" to="/ros_indigosdk_occam/image0/compressed"/>
-    <param name="image_transport" value="compressed"/>
-	<remap from="cmd" to="jackal_velocity_controller/cmd_vel"/>
+	<param name="image_transport" value="compressed"/>
+	<remap from="cmd" to="cmd_vel"/>
 	<remap from="joy" to="bluetooth_teleop/joy"/>
 	<param name="forwardSpeed" value="0.35" />
 	<param name="angularSpeed" value="2.0" />

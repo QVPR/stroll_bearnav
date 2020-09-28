@@ -27,7 +27,7 @@
 <!-- navigator node -->
 <node pkg="stroll_bearnav" type="navigator_node" name="navigator" output="screen">
 	<param name="folder" value="$(arg folder)" />
-	<remap from="cmd" to="jackal_velocity_controller/cmd_vel"/>
+	<remap from="cmd" to="cmd_vel"/>
 </node>
 
 <!-- Save ground truth transforms -->
