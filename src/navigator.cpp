@@ -23,6 +23,8 @@
 #include <dynamic_reconfigure/server.h>
 #include <stroll_bearnav/navigatorConfig.h>
 #include <stroll_bearnav/NavigationInfo.h>
+#include "miro_teach_repeat/SetGoal.h"
+
 using namespace cv;
 using namespace cv::xfeatures2d;
 using namespace std;
@@ -43,6 +45,7 @@ ros::Subscriber loadFeatureSub_;
 ros::Subscriber speedSub_;
 ros::Subscriber distSub_;
 ros::Subscriber distEventSub_;
+
 image_transport::Subscriber image_sub_;
 image_transport::Subscriber image_map_sub_;
 image_transport::Publisher image_pub_;
@@ -50,6 +53,9 @@ image_transport::Publisher image_pub_;
 /* Service for set/reset distance */
 stroll_bearnav::SetDistance srv;
 ros::ServiceClient client;
+miro_teach_repeat::SetGoal goal_srv;
+ros::ServiceClient goal_client;
+
 
 /* Action server */
 typedef actionlib::SimpleActionServer<stroll_bearnav::navigatorAction> Server;
@@ -585,6 +591,8 @@ void distanceCallback(const std_msgs::Float32::ConstPtr& msg)
 				//ROS_INFO("Next %i %f",currentPathElement,path[currentPathElement].forward);
 				 currentPathElement++;
 			}
+			goal_srv.request.goalnum=currentPathElement;
+			if (!goal_client.call(goal_srv)) ROS_ERROR("Failed to call service SetGoal provided by miro_teach_repeat save_ground_truth.py node!");
 		}else{
 			/*if not in demo mode*/
 			if(path.size() > 0 || showAllMatches == false  && showGoodMatches == false) state = COMPLETED;
@@ -636,7 +644,7 @@ int main(int argc, char** argv)
 	featureSub_ = nh.subscribe( "/features", 1,featureCallback);
 	loadFeatureSub_ = nh.subscribe("/localMap", 1,loadFeatureCallback);
 	distSub_=nh.subscribe<std_msgs::Float32>("/distance",1,distanceCallback);
-    distEventSub_=nh.subscribe<std_msgs::Float32>("/distance_events",1,distanceEventCallback);
+	distEventSub_=nh.subscribe<std_msgs::Float32>("/distance_events",1,distanceEventCallback);
 	speedSub_=nh.subscribe<stroll_bearnav::PathProfile>("/pathProfile",1,pathCallback);
   	/* Initiate action server */
 	server = new Server (nh, "navigator", boost::bind(&actionServerCB, _1, server), false);
@@ -644,6 +652,7 @@ int main(int argc, char** argv)
 
 	/* Initiate service */
 	client = nh.serviceClient<stroll_bearnav::SetDistance>("setDistance");
+	goal_client = nh.serviceClient<miro_teach_repeat::SetGoal>("set_goal");
 	/* Initiate dynamic reconfiguration */
 	dynamic_reconfigure::Server<stroll_bearnav::navigatorConfig> server;
 	dynamic_reconfigure::Server<stroll_bearnav::navigatorConfig>::CallbackType f = boost::bind(&callback, _1, _2);
