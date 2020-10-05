@@ -28,7 +28,7 @@ double currentX,currentY;
 double lastX=FLT_MAX;
 double lastY=FLT_MAX;
 float distanceEvent=0;
-float distanceThreshold=0.2;
+float distanceThreshold=0.3;
 
 /* service for set/reset the distance */
 bool setDistance(stroll_bearnav::SetDistance::Request &req, stroll_bearnav::SetDistance::Response &res)
