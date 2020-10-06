@@ -3,9 +3,21 @@
 <!-- Default folder with maps-->
 <arg name="folder" default="$(env HOME)/test_bearnav"/>
 
+<arg name="use_corrupted_odom" default="true"/>
+<arg name="odom_corruption_factor" default="1.0"/>
+
+<!-- Odom corrupter -->
+<node pkg="miro_teach_repeat" type="odom_corrupter.py" name="odom_corrupter" output="screen" if="$(arg use_corrupted_odom)">
+	<remap from="odom" to="odometry/filtered" />
+	<rosparam param="translation_error_factor" subst_value="True">$(arg odom_corruption_factor)</rosparam>
+	<!--rosparam param="rotation_error_factor" subst_value="True">$(arg odom_corruption_factor)</rosparam-->
+	<rosparam param="rotation_error_factor">0.0</rosparam>
+</node>
+
 <!-- Distance Measurement Node -->
 <node pkg="stroll_bearnav" type="odometry_monitor_node" name="odometry_monitor">
-	<remap from="odom" to="odometry/filtered"/>
+		<remap from="odom" to="odometry/filtered" unless="$(arg use_corrupted_odom)" />
+		<remap from="odom" to="odom_corrupted" if="$(arg use_corrupted_odom)" />
 </node>
 
 <!-- feature extraction -->
@@ -31,7 +43,7 @@
 </node>
 
 <!-- Save ground truth transforms -->
-<node pkg="miro_teach_repeat" type="save_ground_truth" name="save_ground_truth">
+<node pkg="miro_teach_repeat" type="save_ground_truth.py" name="save_ground_truth">
 	<param name="folder" value="$(arg folder)" />
 </node>
 

@@ -8,7 +8,7 @@
 
 <!-- image view to check video stream-->
 <node pkg="image_view" type="image_view" name="Image_viewer">
-	<param name="~image_transport" value="compressed" />
+	<param name="~image_transport" value="raw" />
 	<remap from="image" to="/navigationMatches"/>
 	<param name="autosize" value="true" />
 </node>

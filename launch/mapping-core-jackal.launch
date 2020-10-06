@@ -6,7 +6,7 @@
 <!-- Distance Measurement Node -->
 <node pkg="stroll_bearnav" type="odometry_monitor_node" name="odometry_monitor">
 	<remap from="odom" to="odometry/filtered"/>
-	<remap from="joint_states" to="dev/null"/>
+	<remap from="joint_states" to="dev/null_states"/>
 </node>
 
 <!-- feature extraction -->
@@ -20,7 +20,7 @@
 	<param name="folder" value="$(arg folder)" />
 	<remap from="image/compressed" to="/ros_indigosdk_occam/image0/compressed"/>
 	<param name="image_transport" value="compressed"/>
-	<remap from="cmd" to="cmd_vel"/>
+	<remap from="cmd" to="dev/null_cmd"/>
 	<remap from="joy" to="bluetooth_teleop/joy"/>
 	<param name="forwardSpeed" value="0.35" />
 	<param name="angularSpeed" value="2.0" />
