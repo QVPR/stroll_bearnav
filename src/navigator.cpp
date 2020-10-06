@@ -1,10 +1,14 @@
+#include <opencv2/xfeatures2d.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/opencv.hpp>
+#include <opencv2/features2d.hpp>
+
 #include <ros/ros.h>
 #include <image_transport/image_transport.h>
 #include <geometry_msgs/Twist.h>
 #include <cv_bridge/cv_bridge.h>
 #include <sensor_msgs/image_encodings.h>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/highgui/highgui.hpp>
 #include <stdio.h>
 #include <iostream>
 #include <nav_msgs/Odometry.h>
@@ -14,9 +18,6 @@
 #include <stroll_bearnav/PathProfile.h>
 #include <cmath>
 #include <std_msgs/Float32.h>
-#include <opencv2/opencv.hpp>
-#include <opencv2/xfeatures2d.hpp>
-#include <opencv2/features2d.hpp>
 #include <stroll_bearnav/navigatorAction.h>
 #include <stroll_bearnav/SetDistance.h>
 #include <actionlib/server/simple_action_server.h>

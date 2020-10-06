@@ -1,6 +1,8 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.1)
 project(stroll_bearnav)
 set ( CMAKE_CXX_FLAGS "-ggdb")
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
@@ -19,7 +21,13 @@ find_package(catkin REQUIRED COMPONENTS
   rosbag
   miro_teach_repeat
 )
-find_package(OpenCV REQUIRED)
+
+find_package(OpenCV 3 REQUIRED)
+find_package(Threads REQUIRED)
+
+list(REMOVE_ITEM catkin_INCLUDE_DIRS /usr/include/opencv4)
+# message(WARNING "TEST ${catkin_INCLUDE_DIRS}")
+
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -125,10 +133,10 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 # include_directories(include)
-include_directories(
-  ${catkin_INCLUDE_DIRS}
-)
-include_directories(${OpenCV_INCLUDE_DIRS})
+# include_directories(${OpenCV_INCLUDE_DIRS})
+# include_directories(
+#   ${catkin_INCLUDE_DIRS}
+# )
 ## Declare a C++ library
 #add_library(cameleon_driver src/CRobot.cpp)
 #add_library(cameleon_message src/CMessage.cpp)
@@ -149,8 +157,8 @@ add_executable(navigator_node src/navigator.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-add_dependencies(feature_extraction_node ${PROJECT_NAME}_generate_messages_cpp ${PROJECT_NAME}_gencfg ${catkin_EXPORTED_TARGETS})
 add_dependencies(mapper_node ${PROJECT_NAME}_generate_messages_cpp ${PROJECT_NAME}_gencfg ${catkin_EXPORTED_TARGETS})
+add_dependencies(feature_extraction_node ${PROJECT_NAME}_generate_messages_cpp ${PROJECT_NAME}_gencfg ${catkin_EXPORTED_TARGETS})
 add_dependencies(map_preprocessor_node ${PROJECT_NAME}_generate_messages_cpp ${PROJECT_NAME}_gencfg ${catkin_EXPORTED_TARGETS})
 add_dependencies(odometry_monitor_node ${PROJECT_NAME}_generate_messages_cpp ${PROJECT_NAME}_gencfg  ${catkin_EXPORTED_TARGETS})
 add_dependencies(navigator_node ${PROJECT_NAME}_generate_messages_cpp ${PROJECT_NAME}_gencfg ${catkin_EXPORTED_TARGETS})
@@ -161,6 +169,13 @@ target_link_libraries(feature_extraction_node ${catkin_LIBRARIES} ${OpenCV_LIBRA
 target_link_libraries(odometry_monitor_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 target_link_libraries(map_preprocessor_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 target_link_libraries(navigator_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+
+target_include_directories(mapper_node PUBLIC ${OpenCV_INCLUDE_DIRS} ${catkin_INCLUDE_DIRS})
+target_include_directories(feature_extraction_node PUBLIC ${OpenCV_INCLUDE_DIRS} ${catkin_INCLUDE_DIRS})
+target_include_directories(odometry_monitor_node PUBLIC ${OpenCV_INCLUDE_DIRS} ${catkin_INCLUDE_DIRS})
+target_include_directories(map_preprocessor_node PUBLIC ${OpenCV_INCLUDE_DIRS} ${catkin_INCLUDE_DIRS})
+target_include_directories(navigator_node SYSTEM PUBLIC ${catkin_INCLUDE_DIRS})
+target_include_directories(navigator_node BEFORE PUBLIC ${catkin_INCLUDE_DIRS})
 
 #############
 ## Install ##
