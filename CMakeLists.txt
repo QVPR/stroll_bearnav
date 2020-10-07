@@ -12,7 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   nav_msgs
   geometry_msgs
-  cv_bridge
+  # cv_bridge
   image_transport
   message_generation
   dynamic_reconfigure
@@ -25,8 +25,16 @@ find_package(catkin REQUIRED COMPONENTS
 find_package(OpenCV 3 REQUIRED)
 find_package(Threads REQUIRED)
 
+### MASSIVE HACK START
 list(REMOVE_ITEM catkin_INCLUDE_DIRS /usr/include/opencv4)
-# message(WARNING "TEST ${catkin_INCLUDE_DIRS}")
+if(EXISTS "/opt/ros/noetic/lib/libcv_bridge.so")
+  list(APPEND catkin_LIBRARIES "/opt/ros/noetic/lib/libcv_bridge.so")
+else()
+  list(APPEND catkin_LIBRARIES "/opt/ros/melodic/lib/libcv_bridge.so")
+endif()
+# message(WARNING "TEST ${catkin_LIBRARIES}")
+### MASSIVE HACK END
+
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
