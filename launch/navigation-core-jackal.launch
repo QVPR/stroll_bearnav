@@ -7,7 +7,7 @@
 <arg name="odom_corruption_factor" default="1.0"/>
 
 <!-- Odom corrupter -->
-<node pkg="miro_teach_repeat" type="odom_corrupter.py" name="odom_corrupter" output="screen" if="$(arg use_corrupted_odom)">
+<node pkg="teach_repeat" type="odom_corrupter.py" name="odom_corrupter" output="screen" if="$(arg use_corrupted_odom)">
 	<remap from="odom" to="odometry/filtered" />
 	<rosparam param="translation_error_factor" subst_value="True">$(arg odom_corruption_factor)</rosparam>
 	<!--rosparam param="rotation_error_factor" subst_value="True">$(arg odom_corruption_factor)</rosparam-->
@@ -22,9 +22,10 @@
 </node>
 
 <!-- feature extraction -->
+
 <node pkg="stroll_bearnav" type="feature_extraction_node" name="feature_extraction">
-	<remap from="image/compressed" to="/ros_indigosdk_occam/image0/compressed"/>
-    <param name="image_transport" value="compressed"/>
+  <remap from="image/compressed" to="/ros_indigosdk_occam/image0/compressed"/>
+  <param name="image_transport" value="compressed"/>
 </node>
 
 <!-- mapping node -->
@@ -46,7 +47,7 @@
 </node>
 
 <!-- Save ground truth transforms -->
-<node pkg="miro_teach_repeat" type="save_ground_truth.py" name="save_ground_truth">
+<node pkg="teach_repeat" type="save_ground_truth.py" name="save_ground_truth">
 	<param name="folder" value="$(arg folder)" />
 </node>
 
